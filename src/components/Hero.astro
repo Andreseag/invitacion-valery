@@ -1,0 +1,80 @@
+---
+// src/components/Hero.astro
+interface Props {
+  name: string;
+  date: string;
+  image: any; 
+}
+
+const { name, date, image } = Astro.props;
+const imageSrc = typeof image === 'string' ? image : image.src;
+---
+
+<section class="relative h-[90vh] flex flex-col justify-between py-16 overflow-hidden bg-brand-light">
+  <img 
+    src={imageSrc}
+    alt={`Foto de ${name}`}
+    class="absolute inset-0 w-full h-full object-cover z-0"
+  />
+
+  <div class="absolute inset-0 bg-gradient-to-b from-brand/20 via-transparent to-brand-light z-10"></div>
+  
+  <div class="relative z-20 text-center px-4">
+    <h1 class="font-script text-brand-dark text-[85px] md:text-9xl lg:text-[10rem] leading-tight drop-shadow-sm">
+      <!-- {name} -->
+       Valery
+    </h1>
+     <h1 class="font-script text-brand-dark text-[85px] md:text-9xl lg:text-[10rem] leading-tight drop-shadow-sm">
+      <!-- {name} -->
+       García
+    </h1>
+  </div>
+
+  <!-- <div class="relative z-20 text-center px-4">
+    <p class="uppercase tracking-[0.3em] text-brand-dark font-sans text-sm mb-4">
+      Mis Quince Años
+    </p>
+    <div class="h-[1px] w-32 bg-brand mx-auto mb-6"></div>
+    <p class="text-brand-dark/80 text-xl md:text-2xl font-light italic tracking-wide">
+      {date}
+    </p>
+  </div> -->
+  <div class="relative z-20 text-center px-4 mb-8">
+    <p class="uppercase tracking-[0.3em] text-brand-dark font-sans text-sm mb-4">
+      Mis Quince Años
+    </p>
+    
+    <div class="flex items-center justify-center gap-4 mb-6">
+      <div class="h-[1px] w-12 bg-brand/40"></div>
+      <span class="font-serif text-brand-dark text-2xl md:text-4xl tracking-widest uppercase">
+        {date}
+      </span>
+      <div class="h-[1px] w-12 bg-brand/40"></div>
+    </div>
+
+    <p class="font-sans text-brand-dark/70 text-sm md:text-base tracking-[0.2em] uppercase">
+      Arauquita, Colombia
+    </p>
+  </div>
+</section>
+
+<style>
+  h1 {
+    animation: fadeInDown 1.5s ease-out;
+  }
+
+  /* Animación suave para la parte de abajo también */
+  div.relative:last-child {
+    animation: fadeInUp 1.5s ease-out;
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

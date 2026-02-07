@@ -1,0 +1,120 @@
+---
+interface Props {
+  targetDate: string;
+  image: any;
+}
+
+const { targetDate, image } = Astro.props;
+const imageSrc = typeof image === 'string' ? image : image.src;
+---
+
+<section id="countdown-section" class="relative h-[70vh] flex flex-col justify-between py-20 overflow-hidden">
+  <img 
+    src={imageSrc} 
+    alt="Fondo Countdown" 
+    class="absolute inset-0 w-full h-full object-cover z-0"
+  />
+
+  <div class="absolute inset-0 bg-brand-dark/40 z-10"></div>
+
+  <div class="relative z-20 text-center px-4 opacity-0 -translate-y-10 transition-all duration-[1000ms] delay-100 ease-out anim-child">
+    <p class="font-script text-brand-light text-5xl md:text-6xl drop-shadow-md">
+      Tan solo faltan
+    </p>
+  </div>
+
+  <div class="relative z-20 w-full max-w-5xl mx-auto px-4 opacity-0 scale-95 transition-all duration-[1000ms] delay-500 ease-out anim-child">
+    <div 
+      id="countdown" 
+      data-date={targetDate} 
+      class="flex flex-row justify-center items-center gap-4 md:gap-10 text-brand-light"
+    >
+      <div class="flex flex-col items-center">
+        <span id="days" class="font-serif text-6xl md:text-8xl italic leading-none">00</span>
+        <span class="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mt-2 opacity-80">Días</span>
+      </div>
+
+      <span class="text-3xl md:text-5xl opacity-40 font-serif mb-6">:</span>
+
+      <div class="flex flex-col items-center">
+        <span id="hours" class="font-serif text-6xl md:text-8xl italic leading-none">00</span>
+        <span class="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mt-2 opacity-80">Horas</span>
+      </div>
+
+      <span class="text-3xl md:text-5xl opacity-40 font-serif mb-6">:</span>
+
+      <div class="flex flex-col items-center">
+        <span id="minutes" class="font-serif text-6xl md:text-8xl italic leading-none">00</span>
+        <span class="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mt-2 opacity-80">Minutos</span>
+      </div>
+
+      <span class="text-3xl md:text-5xl opacity-40 font-serif mb-6">:</span>
+
+      <div class="flex flex-col items-center">
+        <span id="seconds" class="font-serif text-6xl md:text-8xl italic leading-none text-brand">00</span>
+        <span class="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] mt-2 opacity-80">Segundos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-20 text-center px-4 opacity-0 translate-y-10 transition-all duration-[1000ms] delay-[800ms] ease-out anim-child">
+    <p class="font-serif text-brand-light text-xl md:text-2xl italic tracking-wide drop-shadow-md">
+      Para este día tan especial
+    </p>
+  </div>
+</section>
+
+<script>
+  const initCountdown = (): void => {
+    const container = document.getElementById('countdown') as HTMLElement | null;
+    const section = document.getElementById('countdown-section');
+    
+    // --- Lógica del Observer para Animaciones ---
+    if (section) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const children = entry.target.querySelectorAll('.anim-child');
+            children.forEach(child => {
+              child.classList.remove('opacity-0', '-translate-y-10', 'translate-y-10', 'scale-95');
+              child.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+            });
+          }
+        });
+      }, { threshold: 0.2 });
+      observer.observe(section);
+    }
+
+    // --- Tu lógica original del Reloj ---
+    if (!container) return;
+    const targetStr = container.dataset.date;
+    if (!targetStr) return;
+    const target = new Date(targetStr).getTime();
+    
+    const elements = {
+      d: document.getElementById('days'),
+      h: document.getElementById('hours'),
+      m: document.getElementById('minutes'),
+      s: document.getElementById('seconds'),
+    };
+
+    const update = () => {
+      const now = new Date().getTime();
+      const gap = target - now;
+      if (gap <= 0) {
+        container.innerHTML = "<p class='text-brand-light font-serif text-3xl italic'>¡Hoy es el momento!</p>";
+        return;
+      }
+      const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+      if(elements.d) elements.d.textContent = Math.floor(gap / day).toString().padStart(2, '0');
+      if(elements.h) elements.h.textContent = Math.floor((gap % day) / hour).toString().padStart(2, '0');
+      if(elements.m) elements.m.textContent = Math.floor((gap % hour) / minute).toString().padStart(2, '0');
+      if(elements.s) elements.s.textContent = Math.floor((gap % minute) / second).toString().padStart(2, '0');
+    };
+
+    setInterval(update, 1000);
+    update();
+  };
+
+  initCountdown();
+</script>

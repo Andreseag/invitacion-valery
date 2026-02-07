@@ -1,0 +1,119 @@
+---
+// src/components/RSVP.astro
+interface Props {
+  phoneNumber: string;
+  googleSheetUrl: string;
+}
+
+const { phoneNumber, googleSheetUrl } = Astro.props;
+---
+
+<section id="rsvp-section" class="bg-brand-light py-24 px-6 overflow-hidden">
+  <div class="max-w-2xl mx-auto bg-white/40 border border-brand/10 p-8 md:p-12 rounded-3xl shadow-sm opacity-0 translate-y-12 transition-all duration-[1000ms] ease-out anim-rsvp-card">
+    <div class="text-center mb-10">
+      <h2 class="font-script text-brand-dark text-6xl md:text-7xl mb-4">Confirmar Asistencia</h2>
+      <p class="font-serif text-brand-dark/70 italic">Tu lugar está reservado en nuestro corazón</p>
+    </div>
+
+    <form id="rsvp-form" data-phone={phoneNumber} data-sheet={googleSheetUrl} class="space-y-6">
+      <div>
+        <label class="block font-sans text-xs uppercase tracking-widest text-brand-dark/60 mb-2">Nombre Completo</label>
+        <input type="text" id="name" required class="w-full bg-white/60 border border-brand/20 rounded-xl px-4 py-3 outline-none focus:border-accent text-brand-dark font-serif transition-all" placeholder="Ej: Juan Pérez" />
+      </div>
+
+      <div>
+        <label class="block font-sans text-xs uppercase tracking-widest text-brand-dark/60 mb-2">¿Cuántos asisten?</label>
+        <select id="guests" class="w-full bg-white/60 border border-brand/20 rounded-xl px-4 py-3 outline-none focus:border-accent text-brand-dark font-serif transition-all">
+          <option value="1">1 Persona</option>
+          <option value="2">2 Personas</option>
+          <option value="3">3 Personas</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-sans text-xs uppercase tracking-widest text-brand-dark/60 mb-2">Mensaje (Opcional)</label>
+        <textarea id="message" rows="3" class="w-full bg-white/60 border border-brand/20 rounded-xl px-4 py-3 outline-none focus:border-accent text-brand-dark font-serif transition-all resize-none" placeholder="¡Qué emoción acompañarte!"></textarea>
+      </div>
+
+      <button 
+        id="submit-btn"
+        type="submit" 
+        class="w-full bg-brand-dark text-brand-light py-4 rounded-full font-sans text-xs uppercase tracking-[0.3em] hover:bg-accent transition-all shadow-lg active:scale-95 disabled:opacity-50"
+      >
+        <span id="btn-text">Confirmar y Enviar</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const initRSVP = (): void => {
+    const form = document.getElementById('rsvp-form') as HTMLFormElement | null;
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+    const btnText = document.getElementById('btn-text') as HTMLSpanElement | null;
+    const section = document.getElementById('rsvp-section');
+
+    // --- Lógica de Animación ---
+    if (section) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const card = entry.target.querySelector('.anim-rsvp-card');
+            if (card) {
+              card.classList.remove('opacity-0', 'translate-y-12');
+              card.classList.add('opacity-100', 'translate-y-0');
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      observer.observe(section);
+    }
+
+    // --- Tu lógica original de envío (Sheets + WhatsApp) ---
+    if (!form || !btn || !btnText) return;
+
+    form.addEventListener('submit', async (e: SubmitEvent) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btnText.innerText = "Guardando...";
+
+      const phone = form.dataset.phone;
+      const sheetUrl = form.dataset.sheet;
+      const name = (document.getElementById('name') as HTMLInputElement).value;
+      const guests = (document.getElementById('guests') as HTMLSelectElement).value;
+      const message = (document.getElementById('message') as HTMLTextAreaElement).value;
+
+      const payload = { name, guests, message };
+
+      try {
+        await fetch(sheetUrl!, {
+          method: 'POST',
+          mode: 'no-cors',
+          cache: 'no-cache',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const text = `¡Hola! Confirmo mi asistencia a los 15 de Valery. 
+✨ *Nombre:* ${name}
+👥 *Cupos:* ${guests}
+💌 *Mensaje:* ${message || '¡Nos vemos pronto!'}`;
+
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+        window.open(whatsappUrl, '_blank');
+        btnText.innerText = "¡Enviado!";
+        form.reset();
+        
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un problema, intenta de nuevo.");
+      } finally {
+        btn.disabled = false;
+        btnText.innerText = "Confirmar y Enviar";
+      }
+    });
+  };
+
+  initRSVP();
+</script>

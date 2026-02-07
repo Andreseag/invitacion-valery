@@ -1,0 +1,81 @@
+---
+// src/components/LluviaSobres.astro
+interface Props {
+  nequi?: string;
+  cuentaBancaria?: string;
+  banco?: string;
+}
+
+const { nequi, cuentaBancaria, banco } = Astro.props;
+---
+
+<section id="sobres-section" class="bg-brand-light py-20 px-6 overflow-hidden">
+  <div class="max-w-3xl mx-auto text-center border border-brand/20 rounded-3xl p-10 md:p-16 bg-white/20 backdrop-blur-sm opacity-0 scale-95 transition-all duration-[1200ms] ease-out anim-sobres-card">
+    
+    <div class="text-accent flex justify-center mb-8">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 20V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2ZM2 6l10 7 10-7"/></svg>
+    </div>
+
+    <h2 class="font-script text-brand-dark text-6xl md:text-7xl mb-6">Lluvia de Sobres</h2>
+    
+    <p class="font-serif text-brand-dark/80 text-lg md:text-xl italic mb-10 leading-relaxed">
+      "Tu compañía es mi mejor regalo, pero si deseas hacerme un detalle, este podrá ser en efectivo el día del evento o a través de los siguientes medios:"
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      {nequi && (
+        <div class="bg-white/50 p-6 rounded-2xl border border-brand/10">
+          <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-brand-dark/50 mb-2">Nequi / Daviplata</p>
+          <div class="flex items-center justify-center gap-3">
+            <span class="font-serif text-2xl text-brand-dark">{nequi}</span>
+            <button 
+              onclick={`navigator.clipboard.writeText('${nequi}')`}
+              class="text-accent hover:text-brand-dark transition-colors p-2"
+              title="Copiar número"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {cuentaBancaria && (
+        <div class="bg-white/50 p-6 rounded-2xl border border-brand/10">
+          <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-brand-dark/50 mb-2">Cuenta {banco}</p>
+          <div class="flex items-center justify-center gap-3">
+            <span class="font-serif text-2xl text-brand-dark">{cuentaBancaria}</span>
+            <button 
+              onclick={`navigator.clipboard.writeText('${cuentaBancaria}')`}
+              class="text-accent hover:text-brand-dark transition-colors p-2"
+              title="Copiar cuenta"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <p class="mt-10 font-sans text-[11px] uppercase tracking-widest text-brand-dark/40 italic">
+      Habrá un buzón disponible en la recepción para los sobres.
+    </p>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target.querySelector('.anim-sobres-card');
+        if (card) {
+          card.classList.remove('opacity-0', 'scale-95');
+          card.classList.add('opacity-100', 'scale-100');
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  const section = document.getElementById('sobres-section');
+  if (section) observer.observe(section);
+</script>

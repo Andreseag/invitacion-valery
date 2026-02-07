@@ -1,0 +1,79 @@
+---
+// src/components/Hashtag.astro
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+---
+
+<section id="hashtag-section" class="bg-brand-dark py-20 px-6 relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-full opacity-0 pointer-events-none flex justify-center items-center transition-all duration-[3000ms] ease-out anim-bg-text">
+    <span class="font-script text-[20rem] text-brand-light whitespace-nowrap opacity-5">Valery</span>
+  </div>
+
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+    <div class="mb-6 flex justify-center text-accent opacity-0 translate-y-4 transition-all duration-700 delay-300 anim-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+    </div>
+
+    <h2 class="font-sans text-brand-light/60 uppercase tracking-[0.5em] text-xs mb-4 opacity-0 transition-all duration-700 delay-500 anim-item">Captura cada momento</h2>
+    
+    <div class="inline-block relative opacity-0 scale-90 transition-all duration-1000 delay-700 anim-hashtag">
+      <p class="font-serif text-brand text-5xl md:text-7xl italic mb-6 drop-shadow-lg">
+        {tag}
+      </p>
+      <div class="h-[2px] w-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-all duration-[1500ms] delay-[1200ms] anim-line mx-auto"></div>
+    </div>
+
+    <p class="font-serif text-brand-light/80 text-lg md:text-xl italic mt-8 max-w-lg mx-auto leading-relaxed opacity-0 translate-y-4 transition-all duration-700 delay-[1400ms] anim-item">
+      Comparte tus fotos y videos en redes sociales usando nuestro hashtag oficial y celebremos juntos.
+    </p>
+
+    <div class="mt-10 opacity-0 transition-all duration-700 delay-[1600ms] anim-item">
+      <a 
+        href={`https://www.instagram.com/explore/tags/${tag.replace('#', '')}/`} 
+        target="_blank"
+        class="inline-block border border-brand/30 text-brand-light hover:bg-brand-light hover:text-brand-dark transition-all px-8 py-3 rounded-full font-sans text-[10px] uppercase tracking-[0.3em]"
+      >
+        Ver en Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Animamos el fondo
+        const bg = entry.target.querySelector('.anim-bg-text');
+        if (bg) {
+          bg.classList.remove('opacity-0');
+          bg.classList.add('scale-110'); // Hace un zoom lento muy fino
+        }
+
+        // Animamos los items secuenciales
+        const items = entry.target.querySelectorAll('.anim-item');
+        items.forEach(item => {
+          item.classList.remove('opacity-0', 'translate-y-4');
+        });
+
+        // Animamos el hashtag y su línea
+        const hashtag = entry.target.querySelector('.anim-hashtag');
+        if (hashtag) hashtag.classList.remove('opacity-0', 'scale-90');
+
+        const line = entry.target.querySelector('.anim-line');
+        if (line) {
+          line.classList.remove('w-0');
+          line.classList.add('w-full');
+        }
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const section = document.getElementById('hashtag-section');
+  if (section) observer.observe(section);
+</script>

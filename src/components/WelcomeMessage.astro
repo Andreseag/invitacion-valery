@@ -1,0 +1,52 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = "A mis seres queridos" } = Astro.props;
+---
+
+<section id="welcome-section" class="bg-brand-light py-24 px-6 opacity-0 translate-y-10 transition-all duration-[1200ms] ease-out">
+  <div class="max-w-3xl mx-auto text-center">
+    <div class="mb-8 flex justify-center items-center gap-4 text-brand">
+      <span class="h-[1px] w-10 bg-brand/30"></span>
+      <span class="text-xl">✦</span>
+      <span class="h-[1px] w-10 bg-brand/30"></span>
+    </div>
+
+    <h2 class="font-script text-brand-dark text-5xl md:text-6xl mb-8">
+      {title}
+    </h2>
+
+    <div class="space-y-6">
+      <p class="font-serif text-brand-dark/80 text-lg md:text-xl leading-relaxed italic">
+        "Hay momentos en la vida que son especiales por sí solos, pero compartirlos con las personas que más quiero los hace inolvidables."
+      </p>
+      
+      <p class="font-sans text-brand-dark/70 text-sm md:text-base leading-loose tracking-wide uppercase px-4 md:px-12">
+        Hoy celebro el inicio de una nueva etapa, llena de sueños y esperanzas. 
+        Mi mayor regalo es contar con tu presencia en esta noche donde mis sueños se hacen realidad. 
+        ¡Acompáñame a celebrar mis 15 años!
+      </p>
+    </div>
+
+    <div class="mt-12 flex justify-center">
+        <div class="h-[1px] w-24 bg-brand/30"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Script autónomo para que funcione sí o sí
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Cuando entra en pantalla, quitamos las clases de estado inicial
+        entry.target.classList.remove('opacity-0', 'translate-y-10');
+        entry.target.classList.add('opacity-100', 'translate-y-0');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const section = document.getElementById('welcome-section');
+  if (section) observer.observe(section);
+</script>

@@ -1,0 +1,67 @@
+---
+// src/components/DressCode.astro
+---
+
+<section id="dress-code-section" class="bg-brand-light py-20 px-6">
+  <div class="max-w-4xl mx-auto text-center bg-white/30 border border-brand/10 rounded-3xl p-10 md:p-16 shadow-sm opacity-0 scale-95 transition-all duration-[1200ms] ease-out anim-card">
+    
+    <h2 class="font-script text-brand-dark text-6xl md:text-7xl mb-6">Código de Vestimenta</h2>
+    
+    <p class="font-serif text-brand-dark/80 text-xl italic mb-12">
+      "Tu presencia es nuestro mejor regalo, y verte brillar hará esta noche aún más especial."
+    </p>
+
+    <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24 mb-12">
+      
+      <div class="flex flex-col items-center">
+        <div class="text-accent mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l2 6s-2 1-4 1-4-1-4-1-4 1-4 1-4-1-4-1l2-6Z"/><path d="M19 9v12H5V9"/><path d="M10 14h4"/><path d="M12 9v12"/></svg>
+        </div>
+        <p class="font-sans text-brand-dark/70 uppercase tracking-widest text-xs font-semibold">Damas</p>
+        <p class="font-serif text-brand-dark text-lg italic mt-1">Vestido Largo</p>
+      </div>
+
+      <div class="hidden md:block h-12 w-[1px] bg-brand/20"></div>
+
+      <div class="flex flex-col items-center">
+        <div class="text-accent mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20h16V2H4Z"/><path d="M12 22V7"/><path d="M12 7 4 2"/><path d="M12 7l8-5"/><path d="m8 12 4 2 4-2"/></svg>
+        </div>
+        <p class="font-sans text-brand-dark/70 uppercase tracking-widest text-xs font-semibold">Caballeros</p>
+        <p class="font-serif text-brand-dark text-lg italic mt-1">Traje Formal</p>
+      </div>
+
+    </div>
+
+    <div class="border-t border-brand/10 pt-8">
+      <p class="font-sans text-brand-dark/50 uppercase tracking-[0.3em] text-[10px] mb-4">Color de gala sugerido</p>
+      <div class="flex justify-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#d4bc9d] shadow-inner" title="Champagne"></div>
+        <div class="w-8 h-8 rounded-full bg-[#5c4d42] shadow-inner" title="Moca"></div>
+        <div class="w-8 h-8 rounded-full bg-[#c49a45] shadow-inner" title="Dorado"></div>
+      </div>
+      <p class="font-sans text-brand-dark/40 text-[11px] mt-4 italic">
+        * Se reserva el color blanco para la quinceañera.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target.querySelector('.anim-card');
+        if (card) {
+          card.classList.remove('opacity-0', 'scale-95');
+          card.classList.add('opacity-100', 'scale-100');
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const section = document.getElementById('dress-code-section');
+  if (section) observer.observe(section);
+</script>

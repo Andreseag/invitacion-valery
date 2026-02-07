@@ -1,0 +1,94 @@
+---
+// src/components/Location.astro
+---
+
+<section id="location-section" class="bg-brand-light py-24 px-6 overflow-hidden">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 opacity-0 translate-y-10 transition-all duration-[1000ms] ease-out anim-location-header">
+      <h2 class="font-script text-brand-dark text-6xl md:text-7xl mb-4">Ubicación</h2>
+      
+      <p class="font-serif text-brand-dark/70 text-lg md:text-xl italic max-w-2xl mx-auto mb-8 leading-relaxed">
+        "No existen distancias cuando el corazón nos une. Sería un honor para mí contar con tu presencia en cada momento de este día inolvidable."
+      </p>
+
+      <div class="h-[1px] w-24 bg-brand/30 mx-auto"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="bg-white/50 p-8 md:p-12 rounded-2xl shadow-sm border border-brand/10 text-center flex flex-col justify-between hover:shadow-md transition-shadow opacity-0 -translate-x-20 transition-all duration-[1200ms] delay-300 ease-out anim-card">
+        <div>
+          <div class="text-accent text-4xl mb-6 flex justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 20H2a2 2 0 0 0-2 2h24a2 2 0 0 0-2-2Z"/><path d="M12 11v5"/><path d="M9 13v3"/><path d="M15 13v3"/><path d="M12 2v2"/><path d="M5 6v14h14V6L12 2z"/></svg>
+          </div>
+          <h3 class="font-serif text-brand-dark text-3xl mb-4 italic">Ceremonia</h3>
+          <p class="font-sans text-brand-dark/70 uppercase tracking-widest text-sm mb-2 font-medium">4:00 PM</p>
+          <p class="font-serif text-brand-dark/80 text-lg mb-6">Parroquia del Espíritu Santo</p>
+          <p class="font-sans text-brand-dark/60 text-sm mb-8 leading-relaxed">
+            Calle 123 # 45 - 67<br/>
+            Bogotá, Colombia
+          </p>
+        </div>
+        
+        <div class="flex flex-col gap-3">
+          <a href="https://maps.google.com" target="_blank" class="bg-brand-dark text-brand-light py-3 px-6 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-brand transition-colors text-center">
+            Google Maps
+          </a>
+          <a href="https://waze.com" target="_blank" class="border border-brand-dark/20 text-brand-dark py-3 px-6 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-brand-dark/5 transition-colors text-center">
+            Waze
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white/50 p-8 md:p-12 rounded-2xl shadow-sm border border-brand/10 text-center flex flex-col justify-between hover:shadow-md transition-shadow opacity-0 translate-x-20 transition-all duration-[1200ms] delay-500 ease-out anim-card">
+        <div>
+          <div class="text-accent text-4xl mb-6 flex justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l1 12H5z"/><path d="M11 21a2 2 0 1 0 2 0 2 2 0 1 0-2 0"/><path d="M12 15v4"/></svg>
+          </div>
+          <h3 class="font-serif text-brand-dark text-3xl mb-4 italic">Recepción</h3>
+          <p class="font-sans text-brand-dark/70 uppercase tracking-widest text-sm mb-2 font-medium">8:00 PM</p>
+          <p class="font-serif text-brand-dark/80 text-lg mb-6">Hacienda Santa María</p>
+          <p class="font-sans text-brand-dark/60 text-sm mb-8 leading-relaxed">
+            Vía Suba - Cota Km 5<br/>
+            Cota, Cundinamarca
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a href="https://maps.google.com" target="_blank" class="bg-brand-dark text-brand-light py-3 px-6 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-brand transition-colors text-center">
+            Google Maps
+          </a>
+          <a href="https://waze.com" target="_blank" class="border border-brand-dark/20 text-brand-dark py-3 px-6 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-brand-dark/5 transition-colors text-center">
+            Waze
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Animamos el encabezado
+        const header = entry.target.querySelector('.anim-location-header');
+        if (header) {
+          header.classList.remove('opacity-0', 'translate-y-10');
+          header.classList.add('opacity-100', 'translate-y-0');
+        }
+
+        // Animamos las tarjetas con su respectivo delay
+        const cards = entry.target.querySelectorAll('.anim-card');
+        cards.forEach(card => {
+          card.classList.remove('opacity-0', '-translate-x-20', 'translate-x-20');
+          card.classList.add('opacity-100', 'translate-x-0');
+        });
+        
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const section = document.getElementById('location-section');
+  if (section) observer.observe(section);
+</script>

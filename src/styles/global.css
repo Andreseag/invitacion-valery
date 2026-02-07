@@ -1,0 +1,28 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+@theme {
+  /* Paleta inspirada en las referencias:
+     - brand-light: Un crema suave y cálido para los fondos.
+     - brand: El rosa blush principal, elegante y no muy saturado.
+     - brand-dark: Un tono vino/malva profundo y cálido para textos y contrastes fuertes.
+     - accent: Un dorado rico para detalles de lujo, como el vestido y las sillas.
+  */
+  --color-brand-light: #fefcf5; /* Crema cálido */
+  --color-brand: #e8b4be; /* Rosa blush elegante */
+  --color-brand-dark: #7d4e57; /* Malva profundo y cálido */
+  --color-accent: #c49a45; /* Dorado rico */
+
+  --font-script: "Mea Culpa", cursive;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Montserrat", sans-serif;
+}
+
+/* Opcional: Podemos agregar una clase utilitaria para el texto dorado
+  si quieres usarla en algún título especial.
+*/
+@layer utilities {
+  .text-accent-gold {
+    color: var(--color-accent);
+  }
+}
