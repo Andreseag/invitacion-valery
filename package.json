@@ -9,8 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
+    "satori": "^0.19.1",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.2"
   }
 }
