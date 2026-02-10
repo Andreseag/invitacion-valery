@@ -35,15 +35,15 @@ const ogImageURL = new URL('/og-image.png', Astro.url.origin).href;
     <meta name="description" content={description} />
 
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content="Mis 15 - Valery García" />
-    <meta property="og:description" content="Reserva la fecha: 28.02.2026. #Mis15ConValery" />
-    <meta property="og:image" content={ogImageURL} /> 
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
 
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content="Mis 15 - Valery García" />
-    <meta property="twitter:description" content="Reserva la fecha: 28.02.2026. #Mis15ConValery" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImageURL} />
 
     <meta name="theme-color" content="#FFD1DC" />
